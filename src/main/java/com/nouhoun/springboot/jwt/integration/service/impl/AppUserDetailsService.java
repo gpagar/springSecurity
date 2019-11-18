@@ -13,9 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by nydiarra on 06/05/17.
- */
+ 
 @Component
 public class AppUserDetailsService implements UserDetailsService {
     @Autowired

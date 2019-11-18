@@ -18,10 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
-
-/**
- * Created by nydiarra on 06/05/17.
- */
+ 
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.nouhoun.springboot.jwt.integration.repository")
