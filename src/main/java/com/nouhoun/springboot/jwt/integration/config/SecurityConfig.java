@@ -16,6 +16,9 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
+import com.nouhoun.springboot.jwt.integration.service.impl.MyJwtTokenStore;
+import com.nouhoun.springboot.jwt.integration.service.impl.MyTokenServices;
+
  
   
 @Configuration
@@ -58,15 +61,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public JwtAccessTokenConverter accessTokenConverter() {
-		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+	public MyTokenServices accessTokenConverter() {
+		MyTokenServices converter = new MyTokenServices();
 		converter.setSigningKey(signingKey);
 		return converter;
 	}
 
 	@Bean
 	public TokenStore tokenStore() {
-		return new JwtTokenStore(accessTokenConverter());
+		return new MyJwtTokenStore(accessTokenConverter());
 	}
 
 	@Bean

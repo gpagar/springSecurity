@@ -5,6 +5,7 @@ import com.nouhoun.springboot.jwt.integration.domain.User;
 import com.nouhoun.springboot.jwt.integration.service.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,8 +27,10 @@ public class ResourceController {
     }
 
     @RequestMapping(value ="/users", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('ADMIN_USER')")
-    public List<User> getUsers(){
+    @PreAuthorize("hasAuthority('ADMIN_USER') or hasAuthority('STANDARD_USER')")
+    public List<User> getUsers(Authentication auth){
+    	System.out.println("****  "+auth.getName());
+    	
         return userService.findAllUsers();
     }
 }
