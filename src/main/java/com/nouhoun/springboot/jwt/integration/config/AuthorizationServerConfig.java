@@ -15,8 +15,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
-import com.nouhoun.springboot.jwt.integration.service.impl.MyTokenServices;
 import com.nouhoun.springboot.jwt.integration.service.impl.SureSellClientDetailsService;
 
  
@@ -24,29 +24,13 @@ import com.nouhoun.springboot.jwt.integration.service.impl.SureSellClientDetails
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-	@Value("${security.jwt.client-id}")
-	private String clientId;
-
-	@Value("${security.jwt.client-secret}")
-	private String clientSecret;
-
-	@Value("${security.jwt.grant-type}")
-	private String grantType;
-
-	@Value("${security.jwt.scope-read}")
-	private String scopeRead;
-
-	@Value("${security.jwt.scope-write}")
-	private String scopeWrite = "write";
-
-	@Value("${security.jwt.resource-ids}")
-	private String resourceIds;
+ 
 
 	@Autowired
 	private TokenStore tokenStore;
 
 	@Autowired
-	private MyTokenServices myTokenServices;
+	private JwtAccessTokenConverter accessTokenConverter;
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -73,10 +57,10 @@ SureSellClientDetailsService sureSellClientDetailsService;
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
-		enhancerChain.setTokenEnhancers(Arrays.asList(myTokenServices));
+		enhancerChain.setTokenEnhancers(Arrays.asList(accessTokenConverter));
 		 
 		endpoints.tokenStore(tokenStore)
-		        .accessTokenConverter(myTokenServices)
+		        .accessTokenConverter(accessTokenConverter)
 		        .tokenEnhancer(enhancerChain)
 		        .authenticationManager(authenticationManager);
 	}

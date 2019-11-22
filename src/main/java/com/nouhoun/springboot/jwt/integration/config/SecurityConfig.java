@@ -16,9 +16,6 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
-import com.nouhoun.springboot.jwt.integration.service.impl.MyJwtTokenStore;
-import com.nouhoun.springboot.jwt.integration.service.impl.MyTokenServices;
-
  
   
 @Configuration
@@ -32,8 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${security.encoding-strength}")
 	private Integer encodingStrength;
 
-	@Value("${security.security-realm}")
-	private String securityRealm;
+ 
 
 	@Bean
 	@Override
@@ -53,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		        .and()
 		        .httpBasic()
-		        .realmName(securityRealm)
+		      //  .realmName(securityRealm)
 		        .and()
 		        .csrf()
 		        .disable();
@@ -61,22 +57,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public MyTokenServices accessTokenConverter() {
-		MyTokenServices converter = new MyTokenServices();
+	public JwtAccessTokenConverter accessTokenConverter() {
+		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
 		converter.setSigningKey(signingKey);
 		return converter;
 	}
 
 	@Bean
 	public TokenStore tokenStore() {
-		return new MyJwtTokenStore(accessTokenConverter());
+		return new JwtTokenStore(accessTokenConverter());
 	}
 
 	@Bean
 	@Primary //Making this primary to avoid any accidental duplication with another token service instance of the same name
 	public DefaultTokenServices tokenServices() {
 		DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-		defaultTokenServices.setAccessTokenValiditySeconds(60*60);
 		defaultTokenServices.setTokenStore(tokenStore());
 		defaultTokenServices.setSupportRefreshToken(true);
 		return defaultTokenServices;
