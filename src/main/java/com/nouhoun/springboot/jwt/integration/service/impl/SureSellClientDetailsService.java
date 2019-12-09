@@ -32,7 +32,7 @@ public class SureSellClientDetailsService implements ClientDetailsService {
 		}
 
 		BaseClientDetails baseClientDetails = new BaseClientDetails(clientId, userClientDetails.getResourceIds(),
-				userClientDetails.getScopes(), "password", userClientDetails.getAuthorities());
+				userClientDetails.getScopes(), userClientDetails.getGrantTypes(), userClientDetails.getAuthorities());
 		baseClientDetails.setAccessTokenValiditySeconds(userClientDetails.getAccessTokenValiditySeconds());
 		baseClientDetails.setClientSecret(passwordEncoder.encode(userClientDetails.getClientSecret()));
 

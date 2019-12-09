@@ -9,9 +9,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
  
 @Component
@@ -26,6 +31,12 @@ public class AppUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(s);
 
+        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+		ServletRequestAttributes attributes = (ServletRequestAttributes) requestAttributes;
+		HttpServletRequest request = attributes.getRequest();
+		
+		System.out.println("Password **  "+request.getParameter("name"));
+		
         if(user == null) {
             throw new UsernameNotFoundException(String.format("The username %s doesn't exist", s));
         }
