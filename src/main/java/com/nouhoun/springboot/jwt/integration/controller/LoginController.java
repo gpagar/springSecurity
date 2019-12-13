@@ -23,7 +23,7 @@ public class LoginController{
 			return parameters.toString();
 	    }
 	 
-	  
+	    
 	 
 		 @RequestMapping(value ="/getData", method = RequestMethod.GET)
 		    public String getUsers()
